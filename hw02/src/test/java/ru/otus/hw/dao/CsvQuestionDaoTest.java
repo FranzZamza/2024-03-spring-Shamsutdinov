@@ -1,22 +1,23 @@
 package ru.otus.hw.dao;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.otus.hw.Application;
-import ru.otus.hw.config.ApplicationTestConfig;
+import ru.otus.hw.config.AppProperties;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DisplayName("Дао для чтения вопросов")
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {Application.class, ApplicationTestConfig.class})
 class CsvQuestionDaoTest {
-    @Autowired
-    QuestionDao questionDao;
+    private QuestionDao questionDao;
+    private final static Integer RIGHT_ANSWERS_TO_PASS = 3;
+    private final static String TEST_FILE_NAME = "test-questions.csv";
+
+    @BeforeEach
+    void setup() {
+        AppProperties provider = new AppProperties(RIGHT_ANSWERS_TO_PASS, TEST_FILE_NAME);
+        questionDao = new CsvQuestionDao(provider);
+    }
 
     @Test
     @DisplayName("должен возврщать не пустое множество вопросов")

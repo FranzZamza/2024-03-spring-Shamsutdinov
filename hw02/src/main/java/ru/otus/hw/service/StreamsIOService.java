@@ -35,9 +35,9 @@ public class StreamsIOService implements IOService {
     }
 
     @Override
-    public void printFormattedLineWithOptions(String question, List<String> answers) {
-        printStream.printf("%n" + question + "%n");
-        answers.forEach(answer -> printStream.printf("%4d. %s%n", answers.indexOf(answer) + 1, answer));
+    public void printFormattedLineWithOptions(String tittle, List<String> items) {
+        printStream.printf("%n" + tittle + "%n");
+        items.forEach(answer -> printStream.printf("%4d. %s%n", items.indexOf(answer) + 1, answer));
     }
 
     @Override

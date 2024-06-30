@@ -21,11 +21,11 @@ class StudentServiceTest {
 
     private StudentService studentService;
 
-    private static final String studentTestName = "testName";
+    private static final String STUDENT_TEST_NAME = "testName";
 
     @BeforeEach
     void setUp() {
-        given(ioService.readStringWithPrompt(anyString())).willReturn(studentTestName);
+        given(ioService.readStringWithPrompt(anyString())).willReturn(STUDENT_TEST_NAME);
         studentService = new StudentServiceImpl(ioService);
     }
 
@@ -34,8 +34,8 @@ class StudentServiceTest {
     void shouldCreateStudent() {
         var expectedStudent = studentService.determineCurrentStudent();
         assertAll(
-                () -> assertEquals(studentTestName, expectedStudent.firstName()),
-                () -> assertEquals(studentTestName, expectedStudent.lastName()));
+                () -> assertEquals(STUDENT_TEST_NAME, expectedStudent.firstName()),
+                () -> assertEquals(STUDENT_TEST_NAME, expectedStudent.lastName()));
     }
 
 }
