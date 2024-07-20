@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
 
-@Service
+@Service("ioService")
 public class StreamsIOService implements IOService {
     private static final int MAX_ATTEMPTS = 10;
 

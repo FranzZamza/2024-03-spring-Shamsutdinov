@@ -12,8 +12,8 @@ public class LocalizedIOServiceImpl implements LocalizedIOService {
 
     private final IOService ioService;
 
-    public LocalizedIOServiceImpl(@Qualifier("localizedMessagesServiceImpl") LocalizedMessagesService messagesService,
-                                  @Qualifier("streamsIOService") IOService ioService) {
+    public LocalizedIOServiceImpl(@Qualifier("messagesService") LocalizedMessagesService messagesService,
+                                  @Qualifier("ioService") IOService ioService) {
         this.localizedMessagesService = messagesService;
         this.ioService = ioService;
     }
