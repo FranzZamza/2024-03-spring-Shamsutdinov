@@ -31,8 +31,8 @@ public class JdbcBookRepository implements BookRepository {
                             a.id AS author_id, a.full_name,
                             g.id AS genre_id, g.name
                         FROM books b
-                        JOIN authors a ON b.author_id = a.id
-                        JOIN genres g ON b.genre_id = g.id
+                        INNER JOIN authors a ON b.author_id = a.id
+                        INNER JOIN genres g ON b.genre_id = g.id
                         WHERE b.id = :id
                 """;
         var params = Map.of("id", id);
@@ -47,8 +47,8 @@ public class JdbcBookRepository implements BookRepository {
                     a.id as author_id, a.full_name,
                     g.id as genre_id, g.name
                 FROM books b
-                JOIN authors a  ON b.author_id = a.id
-                JOIN genres g ON b.genre_id = g.id
+                INNER JOIN authors a  ON b.author_id = a.id
+                INNER JOIN genres g ON b.genre_id = g.id
                 """;
         return jdbcTemplate.query(sql, new BookRowMapper());
     }

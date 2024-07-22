@@ -19,13 +19,13 @@ public class JdbcAuthorRepository implements AuthorRepository {
 
     @Override
     public List<Author> findAll() {
-        var sql = "select id, full_name from authors";
+        var sql = "SELECT id, full_name FROM authors";
         return jdbcTemplate.query(sql, new AuthorRowMapper());
     }
 
     @Override
     public Optional<Author> findById(long id) {
-        var sql = "select id, full_name from authors where id=:id";
+        var sql = "SELECT id, full_name FROM authors where id=:id";
         var params = Map.of("id", id);
         return jdbcTemplate.query(sql, params, new AuthorRowMapper()).stream().findFirst();
     }
