@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Import({BookServiceImpl.class, JpaBookRepository.class,
         JpaGenreRepository.class, JpaAuthorRepository.class})
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BookServiceTest {
 
     @Autowired
@@ -56,6 +55,7 @@ class BookServiceTest {
 
     @Test
     @DisplayName("должен найти все книги")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     void shouldFindAllBooks() {
         var actualBooks = bookService.findAll();
 
@@ -91,7 +91,7 @@ class BookServiceTest {
     void shouldUpdateBook() {
         var actualBook = bookService.update(FIRST_BOOK_ID, UPDATED_BOOK_TITLE, FIRST_AUTHOR_ID, FIRST_GENRE_ID);
 
-        var exceptedBook = bookService.findById(FIRST_BOOK_ID).orElseThrow(()->new EntityNotFoundException("Не удалось найти обновленную сущность"));
+        var exceptedBook = bookService.findById(FIRST_BOOK_ID).orElseThrow(() -> new EntityNotFoundException("Не удалось найти обновленную сущность"));
 
         assertEquals(exceptedBook, actualBook);
     }

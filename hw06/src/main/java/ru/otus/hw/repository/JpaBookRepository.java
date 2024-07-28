@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw.model.Book;
+import ru.otus.hw.repository.utils.Hint;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,8 @@ import java.util.Optional;
 public class JpaBookRepository implements BookRepository {
 
     @PersistenceContext
-    private EntityManager em;
+    private final EntityManager em;
+
 
     @Override
     public Optional<Book> findById(long id) {
@@ -29,12 +31,16 @@ public class JpaBookRepository implements BookRepository {
         var entityGraph = em.getEntityGraph("books_entity_graph");
 
         return em.createQuery("SELECT b FROM Book b", Book.class)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
+                .setHint(Hint.FETCH_GRAPH.getPropertyName(), entityGraph)
                 .getResultList();
     }
 
     @Override
     public Book save(Book book) {
+        if (book.getId() == 0) {
+            em.persist(book);
+            return book;
+        }
         return em.merge(book);
     }
 

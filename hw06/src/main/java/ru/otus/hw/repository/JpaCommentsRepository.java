@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class JpaCommentsRepository implements CommentRepository {
 
     @PersistenceContext
-    private EntityManager em;
+    private final EntityManager em;
 
     @Override
     public Optional<Comment> findById(long id) {
@@ -22,10 +23,8 @@ public class JpaCommentsRepository implements CommentRepository {
 
     @Override
     public List<Comment> findAllByBookId(long bookId) {
-        var entityGraph = em.getEntityGraph("comment_entity_graph");
         return em.createQuery("SELECT c FROM Comment c WHERE c.book.id = :bookId", Comment.class)
                 .setParameter("bookId", bookId)
-                .setHint("javax.persistence.fetchgraph", entityGraph)
                 .getResultList();
     }
 

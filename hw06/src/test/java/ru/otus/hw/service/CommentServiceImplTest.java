@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         JpaCommentsRepository.class, JpaAuthorRepository.class,
         JpaGenreRepository.class, CommentServiceImpl.class})
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CommentServiceImplTest {
 
     @Autowired
@@ -53,6 +52,7 @@ class CommentServiceImplTest {
 
     @Test
     @DisplayName("должен найти комментарий по id книги")
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     void shouldFindCommentsByBookId() {
         var actualComments = commentService.findByBookId(FIRST_BOOK_ID);
         assertThat(actualComments)
@@ -82,7 +82,7 @@ class CommentServiceImplTest {
     @DisplayName("должен обновить комменатарий")
     void shouldUpdateComment() {
         var actualComment = commentService.update(FIRST_COMMENT_ID, UPDATED_COMMENT_TEXT, FIRST_BOOK_ID);
-        var expectedComment = commentService.findById(FIRST_COMMENT_ID).orElseThrow(()-> new EntityNotFoundException("Не найден обновленный комментарий!"));
+        var expectedComment = commentService.findById(FIRST_COMMENT_ID).orElseThrow(() -> new EntityNotFoundException("Не найден обновленный комментарий!"));
         assertThat(actualComment).isEqualTo(expectedComment);
     }
 

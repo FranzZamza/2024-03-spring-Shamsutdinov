@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class JpaGenreRepository implements GenreRepository {
 
     @PersistenceContext
