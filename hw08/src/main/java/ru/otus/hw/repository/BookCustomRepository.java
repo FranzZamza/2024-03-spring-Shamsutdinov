@@ -4,7 +4,7 @@ import ru.otus.hw.model.Book;
 
 public interface BookCustomRepository {
 
-    Book insertWithParams(String title, String authorId, String genreId);
+    void delete(Book book);
 
-    Book updateWithParams(String id, String title, String authorId, String genreId);
+    Book save(Book book);
 }

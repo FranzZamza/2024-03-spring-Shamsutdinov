@@ -1,6 +1,7 @@
 package ru.otus.hw.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @ToString(exclude = {"book"})
 @EqualsAndHashCode(exclude = {"book"})
 @Document(collection = "comments")

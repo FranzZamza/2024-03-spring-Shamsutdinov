@@ -9,11 +9,9 @@ spring:
       enabled: true
     noninteractive:
       enabled: false
-
     command:
       version:
         enabled: false
-
 
 mongock:
   runner-type: "InitializingBean"

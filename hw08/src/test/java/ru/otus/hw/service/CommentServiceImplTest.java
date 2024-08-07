@@ -15,7 +15,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataMongoTest
 @Import({CommentServiceImpl.class, TestInitMongoDBDataChangeLog.class,
-        MongoConfig.class, CommentCustomRepositoryImpl.class})
+        MongoConfig.class, CommentCustomRepositoryImpl.class,
+        BookServiceImpl.class, GenreServiceImpl.class,
+        AuthorServiceImpl.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class CommentServiceImplTest {
 
@@ -87,8 +89,6 @@ class CommentServiceImplTest {
     void shouldFindCommentById() {
         var actualComment = commentService.findById(FIRST_COMMENT_ID);
         assertThat(actualComment).isNotNull()
-                .hasValueSatisfying(comment -> {
-                    assertThat(comment.getId()).isEqualTo(FIRST_COMMENT_ID);
-                });
+                .hasValueSatisfying(comment -> assertThat(comment.getId()).isEqualTo(FIRST_COMMENT_ID));
     }
 }

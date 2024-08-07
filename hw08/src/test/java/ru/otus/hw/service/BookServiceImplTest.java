@@ -16,7 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataMongoTest
 @Import({TestInitMongoDBDataChangeLog.class, MongoConfig.class,
-        BookCustomRepositoryImpl.class, BookServiceImpl.class})
+        BookCustomRepositoryImpl.class, BookServiceImpl.class,
+        GenreServiceImpl.class, AuthorServiceImpl.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class BookServiceImplTest {
 

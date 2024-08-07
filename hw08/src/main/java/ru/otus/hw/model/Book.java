@@ -1,6 +1,7 @@
 package ru.otus.hw.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @ToString(exclude = {"author", "genre", "comments"})
 @EqualsAndHashCode(exclude = {"author", "genre", "comments"})
 @Document(collection = "books")
