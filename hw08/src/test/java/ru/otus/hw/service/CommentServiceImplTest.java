@@ -8,14 +8,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.hw.changelog.TestInitMongoDBDataChangeLog;
 import ru.otus.hw.config.MongoConfig;
-import ru.otus.hw.repository.CommentCustomRepositoryImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DataMongoTest
 @Import({CommentServiceImpl.class, TestInitMongoDBDataChangeLog.class,
-        MongoConfig.class, CommentCustomRepositoryImpl.class,
+        MongoConfig.class,
         BookServiceImpl.class, GenreServiceImpl.class,
         AuthorServiceImpl.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
