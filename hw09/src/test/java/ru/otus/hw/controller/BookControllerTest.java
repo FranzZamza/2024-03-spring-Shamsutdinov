@@ -52,20 +52,20 @@ class BookControllerTest {
 
     private static List<BookDto> expectedBookDtos;
 
-    private static final Author firstAuthor = new Author(1, "test name");
-    private static final Genre firstGenre = new Genre(1, "test name");
-    private static final Book firstBook = new Book(1, "test title", firstAuthor, firstGenre, null);
+    private static final Author FIRST_AUTHOR = new Author(1, "test name");
+    private static final Genre FIRST_GENRE = new Genre(1, "test name");
+    private static final Book FIRST_BOOK = new Book(1, "test title", FIRST_AUTHOR, FIRST_GENRE, null);
 
-    private final static String titleMain = "Book List";
-    private final static String titleAddBook = "Add Book";
-    private final static String titleEditBook = "Edit Book";
+    private final static String TITLE_MAIN = "Book List";
+    private final static String TITLE_ADD_BOOK = "Add Book";
+    private final static String TITLE_EDIT_BOOK = "Edit Book";
 
 
     private final static long firstBookId = 1;
     static List<Book> expectedBooks = List.of(
-            firstBook,
-            new Book(2, "test title1", firstAuthor, firstGenre, null),
-            new Book(3, "test title2", firstAuthor, firstGenre, null)
+            FIRST_BOOK,
+            new Book(2, "test title1", FIRST_AUTHOR, FIRST_GENRE, null),
+            new Book(3, "test title2", FIRST_AUTHOR, FIRST_GENRE, null)
     );
 
 
@@ -77,12 +77,12 @@ class BookControllerTest {
     @Test
     @DisplayName("должен вернуть страницу c книгами")
     void shouldReturnMainPageWithAllBooks() throws Exception {
-        when(bookService.findAll()).thenReturn(expectedBooks);
+        when(bookService.findAll()).thenReturn(expectedBookDtos);
         mockMvc.perform(get("/books"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("books"))
                 .andExpect(model().attribute("books", expectedBookDtos))
-                .andExpect(content().string(containsString(titleMain)));
+                .andExpect(content().string(containsString(TITLE_MAIN)));
 
         verify(bookService, times(1)).findAll();
     }
@@ -92,7 +92,7 @@ class BookControllerTest {
     void shouldReturnBookCreateForm() throws Exception {
         mockMvc.perform(get("/books/new"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(titleAddBook)))
+                .andExpect(content().string(containsString(TITLE_ADD_BOOK)))
                 .andExpect(model().attribute("book", new BookDto()));
     }
 
@@ -101,11 +101,11 @@ class BookControllerTest {
     void shouldReturnBookEditFormWithAuthor() throws Exception {
         var expectedBookDto = expectedBookDtos.get(0);
 
-        when(bookService.findById(firstBookId)).thenReturn(firstBook);
+        when(bookService.findById(firstBookId)).thenReturn(expectedBookDto);
 
         mockMvc.perform(get("/books/edit/%d".formatted(firstBookId)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(titleEditBook)))
+                .andExpect(content().string(containsString(TITLE_EDIT_BOOK)))
                 .andExpect(model().attribute("book", expectedBookDto));
 
         verify(bookService, times(1)).findById(firstBookId);
