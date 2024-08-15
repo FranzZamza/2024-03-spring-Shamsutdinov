@@ -61,7 +61,7 @@ class BookControllerTest {
     private final static String TITLE_EDIT_BOOK = "Edit Book";
 
 
-    private final static long firstBookId = 1;
+    private final static long FIRST_BOOK_ID = 1;
     static List<Book> expectedBooks = List.of(
             FIRST_BOOK,
             new Book(2, "test title1", FIRST_AUTHOR, FIRST_GENRE, null),
@@ -101,14 +101,14 @@ class BookControllerTest {
     void shouldReturnBookEditFormWithAuthor() throws Exception {
         var expectedBookDto = expectedBookDtos.get(0);
 
-        when(bookService.findById(firstBookId)).thenReturn(expectedBookDto);
+        when(bookService.findById(FIRST_BOOK_ID)).thenReturn(expectedBookDto);
 
-        mockMvc.perform(get("/books/edit/%d".formatted(firstBookId)))
+        mockMvc.perform(get("/books/edit/%d".formatted(FIRST_BOOK_ID)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(TITLE_EDIT_BOOK)))
                 .andExpect(model().attribute("book", expectedBookDto));
 
-        verify(bookService, times(1)).findById(firstBookId);
+        verify(bookService, times(1)).findById(FIRST_BOOK_ID);
     }
 
     @Test
