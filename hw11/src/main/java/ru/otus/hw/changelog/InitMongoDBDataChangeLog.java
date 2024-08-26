@@ -9,6 +9,8 @@ import ru.otus.hw.model.Book;
 import ru.otus.hw.model.Comment;
 import ru.otus.hw.model.Genre;
 
+import java.util.List;
+
 @ChangeLog(order = "001")
 public class InitMongoDBDataChangeLog {
 
@@ -54,8 +56,11 @@ public class InitMongoDBDataChangeLog {
 
     @ChangeSet(order = "003", id = "initBook", author = "Artem Shamsutdinov", runAlways = true)
     public void initBook(MongockTemplate template) {
-        firstBook = template.save(new Book("1", "Title_1", firstAuthor, firstGenre, null));
-        secondBook = template.save(new Book("2", "Title_2", secondAuthor, secondGenre, null));
+        firstBook = template.save(new Book("1", "Title_1", firstAuthor, firstGenre,
+                List.of(new Comment("1", "good1", firstBook),new Comment("3", "good3", firstBook),
+                        new Comment("4", "good4", firstBook),new Comment("2", "good2", firstBook))));
+        secondBook = template.save(new Book("2", "Title_2", secondAuthor, secondGenre,
+                List.of(new Comment("3", "good3", secondBook))));
         template.save(new Book("3", "Title_3", thirdAuthor, thirdGenre, null));
     }
 

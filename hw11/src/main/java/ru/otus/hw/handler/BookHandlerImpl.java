@@ -48,8 +48,9 @@ public class BookHandlerImpl implements BookHandler {
     @Override
     public Mono<ServerResponse> findById(ServerRequest serverRequest) {
         var id = serverRequest.pathVariable(ID_PATH_VARIABLE);
-        return bookRepository.findById(id)
-                .flatMap(book -> ServerResponse.ok()
+        return bookRepository.findBookByIdWithCommentsLimit(id, 0)
+                .doOnNext(System.out::println)
+                .flatMap(book -> ok()
                         .contentType(APPLICATION_JSON)
                         .bodyValue(bookMapper.toDto(book)))
                 .switchIfEmpty(Mono.error(new EntityNotFoundException("Book with id:%s not found".formatted(id))));
@@ -84,7 +85,7 @@ public class BookHandlerImpl implements BookHandler {
                 .bodyToMono(BookDto.class)
                 .flatMap(bookDto -> {
                     Book book = bookMapper.toBook(bookDto);
-                    var bookMono = bookRepository.findById(book.getId());
+                    var bookMono = bookRepository.findBookByIdWithCommentsLimit(book.getId(),0);
                     var authorMono = findAuthorByNameOrThrow(book);
                     var genreMono = findGenreByNameOrThrow(book);
                     return updateBook(authorMono, genreMono, bookMono, book);
@@ -94,7 +95,7 @@ public class BookHandlerImpl implements BookHandler {
     }
 
     private Mono<Book> updateBook(Mono<Author> authorMono, Mono<Genre> genreMono, Mono<Book> bookMono, Book book) {
-        return Mono.zip(authorMono, genreMono, bookMono)
+            return Mono.zip(authorMono, genreMono, bookMono)
                 .flatMap(tuple -> {
                     var author = tuple.getT1();
                     var genre = tuple.getT2();
