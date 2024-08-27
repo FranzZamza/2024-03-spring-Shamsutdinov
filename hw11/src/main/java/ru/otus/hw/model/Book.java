@@ -11,7 +11,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -19,8 +18,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@ToString(exclude = {"author", "genre", "comments"})
-@EqualsAndHashCode(exclude = {"author", "genre", "comments"})
+@ToString(exclude = {"author", "genre"})
+@EqualsAndHashCode(exclude = {"author", "genre"})
 @Document(collection = "books")
 public class Book {
 
@@ -37,6 +36,4 @@ public class Book {
     @Field("genre")
     private Genre genre;
 
-    @Field("comments")
-    private List<Comment> comments;
 }
