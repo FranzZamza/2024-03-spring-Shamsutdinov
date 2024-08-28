@@ -52,7 +52,7 @@ public class BookHandlerImpl implements BookHandler {
                 .flatMap(book -> ok()
                         .contentType(APPLICATION_JSON)
                         .bodyValue(bookMapper.toDto(book)))
-                .switchIfEmpty(Mono.error(new EntityNotFoundException("Book with id:%s not found".formatted(id))))
+                .switchIfEmpty(creteMonoErrorBookNotFound(id))
                 .onErrorResume(buildResponseWith404Status());
     }
 
@@ -63,10 +63,14 @@ public class BookHandlerImpl implements BookHandler {
                 .flatMap(bookDto -> {
                     Book book = bookMapper.toBook(bookDto);
                     book.setId(UUID.randomUUID().toString());
-                    Mono<Author> authorCheck = findAuthorByNameOrThrow(book);
-                    Mono<Genre> genreCheck = findGenreByNameOrThrow(book);
-                    return Mono.zip(authorCheck, genreCheck)
-                            .then(bookRepository.save(book))
+                    Mono<Author> authorMono = findAuthorByNameOrThrow(book);
+                    Mono<Genre> genreMono = findGenreByNameOrThrow(book);
+                    return Mono.zip(authorMono, genreMono)
+                            .flatMap(tuple -> {
+                                book.setAuthor(tuple.getT1());
+                                book.setGenre(tuple.getT2());
+                                return bookRepository.save(book);
+                            })
                             .then(ServerResponse.ok().build());
                 }).onErrorResume(buildResponseWith404Status());
     }
@@ -74,38 +78,45 @@ public class BookHandlerImpl implements BookHandler {
     @Override
     public Mono<ServerResponse> delete(ServerRequest serverRequest) {
         var id = serverRequest.pathVariable(ID_PATH_VARIABLE);
-        return bookRepository.findById(id)
-                .flatMap(bookRepository::delete)
-                .then(ok().build());
+        return bookRepository
+                .existsById(id)
+                .flatMap(result -> {
+                    if (result) {
+                        return bookRepository
+                                .deleteById(id)
+                                .then(ServerResponse.ok().build());
+                    }
+                    return creteMonoErrorBookNotFound(id);
+                })
+                .onErrorResume(buildResponseWith404Status());
     }
+
+
 
     @Override
     public Mono<ServerResponse> update(ServerRequest serverRequest) {
+        var id = serverRequest.pathVariable(ID_PATH_VARIABLE);
+
         return serverRequest
                 .bodyToMono(BookDto.class)
                 .flatMap(bookDto -> {
                     Book book = bookMapper.toBook(bookDto);
-                    var bookMono = bookRepository.findById(book.getId());
+                    book.setId(id);
                     var authorMono = findAuthorByNameOrThrow(book);
                     var genreMono = findGenreByNameOrThrow(book);
-                    return updateBook(authorMono, genreMono, bookMono, book);
-                })
-                .then(ok().build())
+                    return updateBook(authorMono, genreMono, book);
+                }).then(ok().build())
                 .onErrorResume(buildResponseWith404Status());
     }
 
-    private Mono<Book> updateBook(Mono<Author> authorMono, Mono<Genre> genreMono, Mono<Book> bookMono, Book book) {
-        return Mono.zip(authorMono, genreMono, bookMono)
+    private Mono<Book> updateBook(Mono<Author> authorMono, Mono<Genre> genreMono, Book book) {
+        return Mono.zip(authorMono, genreMono)
                 .flatMap(tuple -> {
                     var author = tuple.getT1();
                     var genre = tuple.getT2();
-                    var bookForUpdate = tuple.getT3();
-
-                    bookForUpdate.setAuthor(author);
-                    bookForUpdate.setGenre(genre);
-                    bookForUpdate.setTitle(book.getTitle());
-
-                    return bookRepository.save(bookForUpdate);
+                    book.setAuthor(author);
+                    book.setGenre(genre);
+                    return bookRepository.save(book);
                 });
     }
 
@@ -131,4 +142,7 @@ public class BookHandlerImpl implements BookHandler {
                                 new EntityNotFoundException("Genre with name %s not found".formatted(name))));
     }
 
+    private Mono<ServerResponse> creteMonoErrorBookNotFound(String id) {
+        return Mono.error(new EntityNotFoundException("Book with id:%s not found".formatted(id)));
+    }
 }
