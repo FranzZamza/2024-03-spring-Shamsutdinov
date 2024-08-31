@@ -1,0 +1,21 @@
+spring:
+  data:
+    mongodb:
+      database: maindb
+      port: 27019
+      host: localhost
+
+mongock:
+  runner-type: "InitializingBean"
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+  change-log-repository-name: ru.otus.hw.changelog
+  change-logs-scan-package: ru.otus.hw.changelog
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 5.0.5
