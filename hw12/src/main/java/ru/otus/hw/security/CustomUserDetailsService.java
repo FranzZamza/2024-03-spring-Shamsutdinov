@@ -13,23 +13,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-   // private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         var user = userRepository
                 .findByUsername(username)
-      //          .map(this::decodePassword)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-
-
-        return new CustomUserPrincipals(user);
+        return new CustomUserPrincipal(user);
     }
 
-/*    private User decodePassword(User u) {
-        var password = passwordEncoder.encode(u.getPassword());
-        u.setPassword(password);
-        return u;
-    }*/
 }
