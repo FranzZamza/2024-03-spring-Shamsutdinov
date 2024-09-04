@@ -15,13 +15,7 @@ values ('BookTitle_1', 1, 1),
 
 insert into comments(text, book_id)
 values ('good book', 1),
-       ('real good book',1),
-       ('real good1 book',2),
-       ('real good2 book',2),
+       ('real good book', 1),
+       ('real good1 book', 2),
+       ('real good2 book', 2),
        ('bad book', 3);
-
-insert into users(username, password, role)
-values ('user', '$2a$10$.upwcs0MTqwvala0rSxEaO2rLkXKOu1ktGIPR4C5M0pxxhjeUMmby', 'ROLE_ADMIN'); /*root*/
-
-insert into users(username, password, role)
-values ('user1', '$2a$10$.upwcs0MTqwvala0rSxEaO2rLkXKOu1ktGIPR4C5M0pxxhjeUMmby', 'ROLE_USER'); /*root*/
