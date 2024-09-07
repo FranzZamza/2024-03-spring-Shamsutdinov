@@ -29,5 +29,6 @@ create table users(
     id bigserial,
     username varchar(128),
     password varchar (128),
+    role varchar(20),
     primary key (id)
 );

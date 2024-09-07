@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.otus.hw.model.User;
 
 import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class CustomUserPrincipal implements UserDetails {
@@ -16,7 +15,10 @@ public class CustomUserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(user.getRole()));
+        return user.getAuthorities()
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
     }
 
     @Override
@@ -48,5 +50,4 @@ public class CustomUserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }
