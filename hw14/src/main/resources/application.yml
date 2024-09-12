@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: hw14
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:h2:mem:maindb
+    driver-class-name: org.h2.Driver
+  data:
+    mongodb:
+      database: maindb
+      port: 27017
+      host: localhost
+
+batch:
+  chunk-size: 5
+  paging-size: 100
