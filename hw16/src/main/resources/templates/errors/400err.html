@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Entity Not Found</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        h1 {
+            color: #721c24;
+        }
+        p {
+            font-size: 1.2em;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f5c6cb;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        a {
+            color: #721c24;
+            text-decoration: none;
+            border-bottom: 1px dashed;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Oops! Entity Not Found</h1>
+    <p th:text="${message}">The requested entity could not be found.</p>
+    <p>Sorry, but the entity you are looking for does not exist or has been removed.</p>
+    <p><a th:href="@{/book/main.html}">Return to homepage</a></p>
+</div>
+</body>
+</html>

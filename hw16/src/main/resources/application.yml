@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  datasource:
+    url: jdbc:h2:mem:maindb
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+      schema-locations: classpath:schema.sql
+
+management:
+  server:
+    port: 8082
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  file:
+    name: logs/logfile.log
